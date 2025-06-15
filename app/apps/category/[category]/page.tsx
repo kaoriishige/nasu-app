@@ -18,7 +18,7 @@ type AppData = {
 }
 
 export default function CategoryAppsPage() {
-  const { category } = useParams()
+  const { category } = useParams() as { category: string };
   const [apps, setApps] = useState<AppData[]>([])
 
   useEffect(() => {
