@@ -20,6 +20,12 @@ export default function AppsPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
+      {/* 👇ここが追加案内文です */}
+      <div className="text-center text-lg mb-4">
+        みんなの那須アプリへようこそ！<br />
+        👇こちらからアプリ一覧をチェックできます！
+      </div>
+
       <h1 className="text-3xl font-bold mb-6 text-center">目的に合わせてアプリを探す</h1>
 
       <div className="flex justify-center mb-6 gap-4">
@@ -51,4 +57,5 @@ export default function AppsPage() {
     </div>
   )
 }
+
 
