@@ -1,3 +1,4 @@
+// /app/admin/landing-editor/page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -57,7 +58,7 @@ export default function LandingEditor() {
       />
       <input
         className="border w-full p-2 mb-4"
-        placeholder="CTAリンク先（例: subscribe, apps）"
+        placeholder="CTAリンク先（例: subscribe）※スラッシュなしで"
         value={ctaLink}
         onChange={(e) => setCtaLink(e.target.value)}
       />
@@ -70,3 +71,4 @@ export default function LandingEditor() {
     </div>
   )
 }
+
