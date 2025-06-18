@@ -12,7 +12,7 @@ export default function AdminDashboard() {
         <li><Link href="/admin/referrals">紹介報酬管理</Link></li>
         <li><Link href="/admin/accounts">銀行口座情報管理</Link></li>
         <li><Link href="/admin/inquiries">問い合わせ一覧</Link></li>
-        <li><Link href="/landing" target=\"_blank\">▶ ランディングページを確認</Link></li>
+        <li><Link href="/landing" target="_blank">▶ ランディングページを確認</Link></li>
       </ul>
     </div>
   )
