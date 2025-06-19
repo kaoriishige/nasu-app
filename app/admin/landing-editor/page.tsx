@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 
+// ✅ 型定義を追加
+type LandingData = {
+  title: string
+  description: string
+  cta: string
+}
+
 export default function LandingEditor() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -15,7 +22,7 @@ export default function LandingEditor() {
       const docRef = doc(db, 'settings', 'landing')
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
-        const data = docSnap.data()
+        const data = docSnap.data() as LandingData
         setTitle(data.title || '')
         setDescription(data.description || '')
         setCta(data.cta || '')
@@ -66,3 +73,4 @@ export default function LandingEditor() {
     </div>
   )
 }
+
