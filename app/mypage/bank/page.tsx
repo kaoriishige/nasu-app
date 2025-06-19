@@ -5,9 +5,17 @@ import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { useUser } from '@/lib/auth'
 
+type BankForm = {
+  bankName: string
+  branchName: string
+  accountType: '普通' | '当座'
+  accountNumber: string
+  accountHolder: string
+}
+
 export default function BankPage() {
   const { user } = useUser()
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<BankForm>({
     bankName: '',
     branchName: '',
     accountType: '普通',
@@ -22,14 +30,22 @@ export default function BankPage() {
       const ref = doc(db, 'bankAccounts', user.uid)
       const snap = await getDoc(ref)
       if (snap.exists()) {
-        setForm(snap.data() as any)
+        const data = snap.data() as Partial<BankForm>
+        setForm(prev => ({
+          ...prev,
+          ...data,
+        }))
       }
     }
     load()
   }, [user])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setForm(prev => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
   const handleSave = async () => {
@@ -94,3 +110,4 @@ export default function BankPage() {
     </div>
   )
 }
+
