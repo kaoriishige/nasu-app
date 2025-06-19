@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { buffer } from 'micro'
 import Stripe from 'stripe'
-import { initializeApp, getApps, cert } from 'firebase-admin/app'
+import { initializeApp, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
-import admin from 'firebase-admin'
 
 if (!getApps().length) {
   initializeApp()
@@ -28,10 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).end('Method not allowed')
   }
 
-  let event: Stripe.Event
   const sig = req.headers['stripe-signature'] as string
   const buf = await buffer(req)
 
+  let event: Stripe.Event
   try {
     event = stripe.webhooks.constructEvent(buf, sig, endpointSecret)
   } catch (err: any) {
@@ -63,6 +62,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('✅ Referral recorded:', referralId)
     }
   }
+
+  res.status(200).json({ received: true })
+}
+
 
   res.status(200).json({ received: true })
 }
