@@ -7,7 +7,7 @@ import { useUser } from '@/lib/auth' // ← Firebase AuthContext を使ってる
 
 export default function MyPage() {
   const { user } = useUser()
-  const [referrals, setReferrals] = useState<any[]>([])
+  const [referrals, setReferrals] = useState<Record<string, any>[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
 
   useEffect(() => {
