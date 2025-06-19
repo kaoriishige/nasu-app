@@ -3,12 +3,21 @@
 import { useEffect, useState } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { useUser } from '@/lib/auth' // ← Firebase AuthContext を使ってる前提
+import { useUser } from '@/lib/auth'
+
+// ✅ 型定義
+interface Referral {
+  referredEmail: string
+  amount: number
+  timestamp: {
+    seconds: number
+  }
+}
 
 export default function MyPage() {
   const { user } = useUser()
-  const [referrals, setReferrals] = useState<Record<string, any>[]>([])
-  const [totalAmount, setTotalAmount] = useState(0)
+  const [referrals, setReferrals] = useState<Referral[]>([])
+  const [totalAmount, setTotalAmount] = useState<number>(0)
 
   useEffect(() => {
     if (!user?.email) return
@@ -19,7 +28,7 @@ export default function MyPage() {
         where('referrerId', '==', user.uid)
       )
       const snapshot = await getDocs(q)
-      const data = snapshot.docs.map(doc => doc.data())
+      const data = snapshot.docs.map(doc => doc.data() as Referral)
       setReferrals(data)
       setTotalAmount(data.reduce((sum, r) => sum + (r.amount || 0), 0))
     }
@@ -50,3 +59,4 @@ export default function MyPage() {
     </div>
   )
 }
+
