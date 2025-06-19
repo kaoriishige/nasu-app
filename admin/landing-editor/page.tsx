@@ -28,7 +28,7 @@ export default function LandingEditor() {
     load()
   }, [])
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (key: string, value: string) => {
     setForm({ ...form, [key]: value })
   }
 
