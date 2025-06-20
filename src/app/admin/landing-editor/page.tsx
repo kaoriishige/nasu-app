@@ -28,7 +28,7 @@ export default function LandingEditorPage() {
       const snap = await getDoc(ref)
       if (snap.exists()) {
         const data = snap.data() as Partial<LandingForm>
-        setForm((prev) => ({
+        setForm(prev => ({
           ...prev,
           ...data,
         }))
@@ -39,22 +39,13 @@ export default function LandingEditorPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
       [name]: value,
     }))
   }
 
-    const event = {
-      target: {
-        name: key,
-        value: joined,
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-    handleChange(event)
-  }
-
-  const handleSave = async () => {
+  const save = async () => {
     await setDoc(ref, form, { merge: true })
     alert('保存しました')
   }
@@ -76,7 +67,7 @@ export default function LandingEditorPage() {
       ))}
 
       <button
-        onClick={handleSave}
+        onClick={save}
         className="bg-blue-600 text-white px-4 py-2 rounded"
       >
         保存する
@@ -84,6 +75,7 @@ export default function LandingEditorPage() {
     </div>
   )
 }
+
 
 
 
