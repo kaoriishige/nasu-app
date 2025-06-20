@@ -4,26 +4,28 @@ import { useEffect, useState } from 'react'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 
-type FirestoreLandingData = {
+type LandingForm = {
   title: string
   headline: string
   subtitle: string
   copy: string
   ctaText: string
   ctaLink: string
-  priceInfo: string[]
-  introSteps: string[]
+  priceInfo: string         // textarea用
+  introSteps: string        // textarea用
   referralInfo: string
-  appPicks: string[]
+  appPicks: string          // textarea用
   pr: string
 }
 
-type UIForm = {
-  [K in keyof FirestoreLandingData]: FirestoreLandingData[K] extends string[] ? string : FirestoreLandingData[K]
+type FirestoreLandingData = Omit<LandingForm, 'priceInfo' | 'introSteps' | 'appPicks'> & {
+  priceInfo: string[]
+  introSteps: string[]
+  appPicks: string[]
 }
 
 export default function LandingEditorPage() {
-  const [form, setForm] = useState<UIForm>({
+  const [form, setForm] = useState<LandingForm>({
     title: '',
     headline: '',
     subtitle: '',
@@ -43,13 +45,14 @@ export default function LandingEditorPage() {
     const fetch = async () => {
       const snap = await getDoc(ref)
       if (snap.exists()) {
-        const data = snap.data() as FirestoreLandingData
-        setForm({
+        const data = snap.data() as Partial<FirestoreLandingData>
+        setForm(prev => ({
+          ...prev,
           ...data,
           priceInfo: (data.priceInfo || []).join('\n'),
           introSteps: (data.introSteps || []).join('\n'),
           appPicks: (data.appPicks || []).join('\n'),
-        })
+        }))
       }
     }
     fetch()
@@ -111,3 +114,4 @@ export default function LandingEditorPage() {
     </div>
   )
 }
+
