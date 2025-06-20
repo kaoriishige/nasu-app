@@ -28,34 +28,33 @@ export default function LandingEditorPage() {
       const snap = await getDoc(ref)
       if (snap.exists()) {
         const data = snap.data() as Partial<LandingForm>
-        setForm(prev => ({
+        setForm((prev) => ({
           ...prev,
           ...data,
         }))
       }
     }
     fetch()
-
-    // ✅ ESLintエラーを回避するための擬似使用
-    console.log(handleMultiLine.toString())
-
   }, [ref])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]: value,
     }))
   }
 
-  // ✅ 未使用関数とみなされないよう保持
-  const handleMultiLine = (key: keyof LandingForm, value: string) => {
-    const joined = value.split('\n').filter(Boolean).join('\n')
-    handleChange({ target: { name: key, value: joined } } as React.ChangeEvent<HTMLInputElement>)
+    const event = {
+      target: {
+        name: key,
+        value: joined,
+      },
+    } as React.ChangeEvent<HTMLInputElement>
+    handleChange(event)
   }
 
-  const save = async () => {
+  const handleSave = async () => {
     await setDoc(ref, form, { merge: true })
     alert('保存しました')
   }
@@ -77,7 +76,7 @@ export default function LandingEditorPage() {
       ))}
 
       <button
-        onClick={save}
+        onClick={handleSave}
         className="bg-blue-600 text-white px-4 py-2 rounded"
       >
         保存する
@@ -85,6 +84,8 @@ export default function LandingEditorPage() {
     </div>
   )
 }
+
+
 
 
 
