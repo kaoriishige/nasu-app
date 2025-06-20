@@ -28,7 +28,7 @@ export default function LandingEditorPage() {
       const snap = await getDoc(ref)
       if (snap.exists()) {
         const data = snap.data() as Partial<LandingForm>
-        setForm(prev => ({
+        setForm((prev) => ({
           ...prev,
           ...data,
         }))
@@ -39,7 +39,7 @@ export default function LandingEditorPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]: value,
     }))
