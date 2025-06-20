@@ -45,6 +45,11 @@ export default function LandingEditorPage() {
     }))
   }
 
+  // ✅ 修正済み: string[] → string に変換し、handleChange を模倣
+  const handleMultiLine = (key: keyof LandingForm, value: string) => {
+    const joined = value.split('\n').filter(Boolean).join('\n')
+    handleChange({ target: { name: key, value: joined } } as React.ChangeEvent<HTMLInputElement>)
+  }
 
   const save = async () => {
     await setDoc(ref, form, { merge: true })
@@ -76,4 +81,5 @@ export default function LandingEditorPage() {
     </div>
   )
 }
+
 
