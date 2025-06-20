@@ -14,8 +14,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node"]
+    "types": ["node"],
+
+    // ✅ 以下を追加
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "exclude": ["node_modules", "functions"] // ← ★ ここが重要
+  "exclude": ["node_modules", "functions"]
 }
+
 
