@@ -1,22 +1,9 @@
-// /app/layout.tsx
-import './globals.css'
-
-export const metadata = {
-  title: 'みんなの那須アプリ',
-  description: '地域アプリ55選が使い放題！',
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
-      <body>
-        {children}
-      </body>
-    </html>
+    <div className="min-h-screen bg-white text-black p-6">
+      <h1 className="text-2xl font-bold mb-4">管理画面</h1>
+      {children}
+    </div>
   )
 }
 

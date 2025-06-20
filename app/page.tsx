@@ -1,7 +1,8 @@
-// app/page.tsx
-import { redirect } from 'next/navigation';
-
-export default function Home() {
-  redirect('/apps');
+export default function AdminPage() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">管理画面トップページ</h1>
+    </div>
+  )
 }
 
