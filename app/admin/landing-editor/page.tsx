@@ -4,22 +4,26 @@ import { useEffect, useState } from 'react'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 
-type LandingForm = {
+type FirestoreLandingData = {
   title: string
   headline: string
   subtitle: string
   copy: string
   ctaText: string
   ctaLink: string
-  priceInfo: string
-  introSteps: string
+  priceInfo: string[]
+  introSteps: string[]
   referralInfo: string
-  appPicks: string
+  appPicks: string[]
   pr: string
 }
 
+type UIForm = {
+  [K in keyof FirestoreLandingData]: FirestoreLandingData[K] extends string[] ? string : FirestoreLandingData[K]
+}
+
 export default function LandingEditorPage() {
-  const [form, setForm] = useState<LandingForm>({
+  const [form, setForm] = useState<UIForm>({
     title: '',
     headline: '',
     subtitle: '',
@@ -39,22 +43,17 @@ export default function LandingEditorPage() {
     const fetch = async () => {
       const snap = await getDoc(ref)
       if (snap.exists()) {
-        const data = snap.data() as Partial<LandingForm & {
-          priceInfo?: string[],
-          introSteps?: string[],
-          appPicks?: string[]
-        }>
-        setForm(prev => ({
-          ...prev,
+        const data = snap.data() as FirestoreLandingData
+        setForm({
           ...data,
           priceInfo: (data.priceInfo || []).join('\n'),
           introSteps: (data.introSteps || []).join('\n'),
           appPicks: (data.appPicks || []).join('\n'),
-        }))
+        })
       }
     }
     fetch()
-  }, [ref])
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -65,13 +64,13 @@ export default function LandingEditorPage() {
   }
 
   const handleSave = async () => {
-    const formatted = {
+    const payload: FirestoreLandingData = {
       ...form,
       priceInfo: form.priceInfo.split('\n').filter(Boolean),
       introSteps: form.introSteps.split('\n').filter(Boolean),
       appPicks: form.appPicks.split('\n').filter(Boolean),
     }
-    await setDoc(ref, formatted, { merge: true })
+    await setDoc(ref, payload, { merge: true })
     alert('保存しました')
   }
 
@@ -79,8 +78,7 @@ export default function LandingEditorPage() {
     <div className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-bold">ランディングページ編集</h1>
 
-      {/* 単行の入力欄 */}
-      {(['title', 'headline', 'subtitle', 'copy', 'ctaText', 'ctaLink'] as Array<keyof LandingForm>).map((key) => (
+      {(['title', 'headline', 'subtitle', 'copy', 'ctaText', 'ctaLink', 'referralInfo', 'pr'] as const).map((key) => (
         <div key={key}>
           <label className="block font-medium mb-1">{key}</label>
           <input
@@ -92,8 +90,7 @@ export default function LandingEditorPage() {
         </div>
       ))}
 
-      {/* 複数行入力欄 */}
-      {(['priceInfo', 'introSteps', 'referralInfo', 'appPicks', 'pr'] as Array<keyof LandingForm>).map((key) => (
+      {(['priceInfo', 'introSteps', 'appPicks'] as const).map((key) => (
         <div key={key}>
           <label className="block font-medium mb-1">{key}（複数行OK）</label>
           <textarea
@@ -114,5 +111,3 @@ export default function LandingEditorPage() {
     </div>
   )
 }
-
-
