@@ -1,4 +1,3 @@
-// lib/firebase.ts
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 
@@ -8,5 +7,8 @@ const firebaseConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
 }
 
-const app = initializeApp(firebaseConfig)
-export const db = getFirestore(app)
+const firebaseApp = initializeApp(firebaseConfig)
+export const app = firebaseApp      // ✅ ここが重要
+export const db = getFirestore(firebaseApp)
+
+
