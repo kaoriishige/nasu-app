@@ -1,0 +1,5 @@
+functions/
+scripts/
+lib/firebase-core.ts
+lib/firebase.tsx
+app/page.tsx
