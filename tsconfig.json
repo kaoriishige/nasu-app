@@ -15,8 +15,6 @@
     "jsx": "preserve",
     "incremental": true,
     "types": ["node"],
-
-    // ✅ 以下を追加
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
