@@ -45,6 +45,12 @@ export default function LandingEditorPage() {
     }))
   }
 
+  // 🔧 修正ポイント：文字列配列を結合してhandleChangeに渡す
+  const handleMultiLine = (key: keyof LandingForm, value: string) => {
+    const joined = value.split('\n').filter(Boolean).join('\n')
+    handleChange({ target: { name: key, value: joined } } as React.ChangeEvent<HTMLInputElement>)
+  }
+
   const save = async () => {
     await setDoc(ref, form, { merge: true })
     alert('保存しました')
@@ -75,3 +81,4 @@ export default function LandingEditorPage() {
     </div>
   )
 }
+
